@@ -1,12 +1,19 @@
-import RecipeCard from "./ui/recepeCard";
+import { sql } from "@vercel/postgres";
+import RecipeCard from "./ui/recipeCard";
+import {RecipeType} from "@/lib/types";
 
-export default function Home() {
-  const recipes = [] 
-  for(let i = 0; i < 20; i++){
-    recipes.push(
-    <li key={i} className={i === 20 ? "": "pb-4"}>
-      <RecipeCard />
-    </li>);
-    }
-  return <ul>{recipes}</ul>
+
+
+export default async function Home() {
+
+  const recipes = (await sql`SELECT * FROM recipes`).rows as RecipeType[];
+  return (
+    <ul>
+      {recipes.map((recipe) =>(
+          <li key={recipe.id} className="pb-4">
+            <RecipeCard recipeData={recipe}/>
+          </li>
+      ))}
+    </ul>
+  );
 }

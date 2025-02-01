@@ -1,7 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import {RecipeType} from '@/lib/types';
 
-export default function RecipeCard() {
+
+
+export default function RecipeCard( {recipeData}: {recipeData: RecipeType}) {
+
     return (
         <div className="bg-white">
         <Link href="recipe">
@@ -12,8 +16,8 @@ export default function RecipeCard() {
                 height={200}
             />
             <div className="p-2">
-                <p className="text-black">Nudeln</p>
-                <p className="text-gray-900 text-sm">Karotten, Nudeln, Kartoffeln</p>
+                <p className="text-black">{recipeData.name}</p>
+                <p className="text-gray-900 text-sm">{recipeData.description}</p>
             </div>
         </Link>
         </div>
