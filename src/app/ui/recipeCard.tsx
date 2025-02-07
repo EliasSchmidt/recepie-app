@@ -8,7 +8,7 @@ export default function RecipeCard( {recipeData}: {recipeData: RecipeType}) {
 
     return (
         <div className="bg-white">
-        <Link href="recipe">
+        <Link href={`recipes/${recipeData.id}`}>
             <Image
                 src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg"
                 alt="image"

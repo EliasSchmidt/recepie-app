@@ -1,9 +1,22 @@
-import { sql } from "@vercel/postgres";
+import { getRecipeById, getRecipes } from "@/lib/comms";
 import Image from "next/image"
 
 
-export default async function Page() {
+export const dynamicParams = false;
 
+export async function generateStaticParams() {
+    console.log('recipes[id]: getStaticProps');
+    const recipes = await getRecipes();
+  
+    return recipes.map((recipe) => ( {
+      id: String(recipe.id)  
+    }));
+}
+
+export default async function Page({params}: {params: Promise<{id: string}>}) {
+
+    const id = (await params).id
+   const recipe = await getRecipeById(Number(id));
     return (
         <div>
             <Image
@@ -12,12 +25,12 @@ export default async function Page() {
                 width={400}
                 height={200}
             />
+            {recipe.description}
             <label>
                 <input type="checkbox" className="mr-2" />
                 Zutat 1
             </label>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus ad dicta, odit fugit, maxime mollitia itaque ea soluta cumque, voluptatum alias inventore repudiandae numquam quasi. Illum labore recusandae nemo eligendi!</p>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus ad dicta, odit fugit, maxime mollitia itaque ea soluta cumque, voluptatum alias inventore repudiandae numquam quasi. Illum labore recusandae nemo eligendi!</p>
+            <p>{recipe.content}</p>
         </div>
     );
 }

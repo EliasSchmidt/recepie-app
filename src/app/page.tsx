@@ -3,9 +3,7 @@ import RecipeCard from "./ui/recipeCard";
 import {RecipeType} from "@/lib/types";
 
 
-
 export default async function Home() {
-
   const recipes = (await sql`SELECT * FROM recipes`).rows as RecipeType[];
   return (
     <ul>

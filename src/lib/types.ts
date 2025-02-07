@@ -1,5 +1,5 @@
 export type RecipeType = {
-    id: bigint,
+    id: number,
     name: string,
     description: string,
     content: string,
