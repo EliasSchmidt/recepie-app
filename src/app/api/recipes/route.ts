@@ -4,11 +4,14 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
     const formData = await req.formData();
 
-    const name = formData.get("name") as string;
-    const description = formData.get("description") as string;
-    const content = formData.get("content") as string;
+    const name = formData.get("name")?.toString().trim();
+    const description = formData.get("description")?.toString().trim();
+    const content = formData.get("content")?.toString().trim();
+    const reelLink = formData.get("reelLink")?.toString().trim();
+    const imageLink = formData.get("imageLink")?.toString().trim();
 
 
-    const result = await sql`INSERT INTO recipes (name, description) VALUES ('${name}', '${description}', '${content}')`;
+    await sql`INSERT INTO recipes (name, description, content, reel-link, image-link) VALUES (${name}, ${description}, ${content}, ${reelLink}, ${imageLink})`;
+
     return NextResponse.json({ success: true });
 }

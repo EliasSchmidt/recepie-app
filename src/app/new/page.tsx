@@ -1,7 +1,7 @@
 import { getIngredients, getTags } from "@/lib/comms"
 import NewRecipeForm from "../ui/newRecipeForm";
 
-export async function Page({params}: {params: Promise<{id: string}>}) {
+export default async function Page() {
     //fetches
     const tags = await getTags();
     const ingredients = await getIngredients();

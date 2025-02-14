@@ -1,20 +1,27 @@
+'use client';
+
 import { IngredientType, TagType } from "@/lib/types";
 import { useState } from "react";
+
 
 export default function NewRecipeForm({ tags, ingredients }: { tags: TagType[], ingredients: IngredientType[] }) {
     const [message, setMessage] = useState("");
 
-    async function handleSubmit(event: React.FocusEvent<HTMLFormElement>) {
-        event.preventDefault
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
 
-        const formData = new FormData(event.currentTarget);
+        const form = event.currentTarget;
+        const formData = new FormData(form);
         const name = formData.get("name")?.toString().trim();
         const description = formData.get("description")?.toString().trim();
+        const content = formData.get("content")?.toString().trim();
 
-        if (!name || !description) {
-            setMessage("all fields are requierd!");
+
+        if (!name || !description || !content) {
+            setMessage("all fields are required!");
             return;
         }
+
 
         const result = await fetch("/api/recipes", {
             method: "POST",
@@ -23,13 +30,21 @@ export default function NewRecipeForm({ tags, ingredients }: { tags: TagType[], 
 
         if (result.ok) {
             setMessage("Recipe created successfully!");
-            event.currentTarget.reset();
 
-            //trigger ISR TODO: Understand and rebuild all relevant pages
+            if (form) {
+                form.reset();
+            }
+
             await fetch("/api/revalitate?path=/recipes", { method: "POST" });
         } else {
             setMessage("Failed to create Recipe.");
         }
+    }
+
+    type Element = {key: number; name: string};
+
+    function list(elements: Element[]) {
+        return elements.map(element => <li key={element.key}>{element.name}</li>)
     }
 
 
@@ -38,8 +53,13 @@ export default function NewRecipeForm({ tags, ingredients }: { tags: TagType[], 
     return (<div>
         <h1>Create Recipe</h1>
         <form onSubmit={handleSubmit}>
-            <input name="name" placeholder="Recipe name" required />
-            <textarea name="description" placeholder="Description" required />
+            <ul>{list(tags.map(tag => ({ key: tag.id, name: tag.name })))}</ul>
+            <ul>{list(ingredients.map(tag => ({ key: tag.id, name: tag.name })))}</ul>
+            <input className="text-black" name="name" placeholder="Recipe name" required />
+            <textarea className="text-black" name="description" placeholder="Description" required />
+            <textarea className="text-black" name="content" placeholder="content" required />
+            <textarea className="text-black" name="reelLink" placeholder="link to a reel" />
+            <textarea className="text-black" name="imageLink" placeholder="link to a image" />
             <button type="submit">Create</button>
         </form>
         {message && <p>{message}</p>}
