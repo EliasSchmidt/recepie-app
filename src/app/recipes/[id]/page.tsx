@@ -1,22 +1,47 @@
-import { getRecipeById, getRecipes } from "@/lib/comms";
+import { getRecipeById, getRecipeOverwievs} from "@/lib/comms";
 import Image from "next/image"
 
+
+// TODO: Add Imag from uploadthing
+// TODO: Style page
 
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
     console.log('recipes[id]: getStaticProps');
-    const recipes = await getRecipes();
+    const recipes = await getRecipeOverwievs();
   
     return recipes.map((recipe) => ( {
-      id: String(recipe.id)  
+      id:`${recipe.id}`  
     }));
 }
 
 export default async function Page({params}: {params: Promise<{id: string}>}) {
-
-    const id = (await params).id
+   const id = (await params).id;
    const recipe = await getRecipeById(Number(id));
+
+   const ingredientsBlock = [];   
+   for(const ingredient of recipe.ingredients){
+    ingredientsBlock.push(
+        <p>
+            <label>
+                <input type="checkbox" className="mr-2" />
+                {ingredient.name}
+            </label>
+        </p>
+    )
+   }
+
+   const tagsBlock = [];
+   for(const tag of recipe.tags){
+    tagsBlock.push(<div>
+        <div className="bg-white br-15">
+            {tag.name}
+        </div>
+    </div>)
+   }
+
+
     return (
         <div>
             <Image
@@ -25,12 +50,11 @@ export default async function Page({params}: {params: Promise<{id: string}>}) {
                 width={400}
                 height={200}
             />
+            {...tagsBlock}
             {recipe.description}
-            <label>
-                <input type="checkbox" className="mr-2" />
-                Zutat 1
-            </label>
+            {...ingredientsBlock}
             <p>{recipe.content}</p>
+            <p>{recipe.reelLink}</p>
         </div>
     );
 }

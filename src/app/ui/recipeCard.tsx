@@ -6,6 +6,8 @@ import {RecipeType} from '@/lib/types';
 
 export default function RecipeCard( {recipeData}: {recipeData: RecipeType}) {
 
+
+    // TODO: Ad Dynamic data
     return (
         <div className="bg-white">
         <Link href={`recipes/${recipeData.id}`}>
