@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     const imageLink = formData.get("imageLink")?.toString().trim();
 
 
-    await sql`INSERT INTO recipes (name, description, content, reel-link, image-link) VALUES (${name}, ${description}, ${content}, ${reelLink}, ${imageLink})`;
+    await sql`INSERT INTO recipes (name, description, content, reel, image) VALUES (${name}, ${description}, ${content}, ${reelLink}, ${imageLink})`;
 
     return NextResponse.json({ success: true });
 }

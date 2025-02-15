@@ -3,7 +3,7 @@ import "./globals.css";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Recepies",
+  title: "Recipes",
   description: "Share your recepies",
 };
 
