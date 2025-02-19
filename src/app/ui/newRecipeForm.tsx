@@ -1,6 +1,6 @@
 'use client';
 
-import { IngredientType, TagType } from "@/lib/types";
+import { IngredientType, RecipeType, TagType } from "@/lib/types";
 import { useState } from "react";
 
 
@@ -22,10 +22,17 @@ export default function NewRecipeForm({ tags, ingredients }: { tags: TagType[], 
             return;
         }
 
+        const recipe: RecipeType = {
+          name,
+          description,
+          content,
+          tags: [],
+          ingredients: [],
+        };
 
         const result = await fetch("/api/recipes", {
             method: "POST",
-            body: formData,
+            body: JSON.stringify(recipe),
         });
 
         if (result.ok) {

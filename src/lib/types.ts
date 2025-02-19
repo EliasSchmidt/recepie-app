@@ -4,10 +4,10 @@ export type TagType = {
 }
 
 export type RecipeOverviewType = {
-  id: number,
+  id?: number,
   name: string,
   description: string,
-  imageLink: string,
+  imageLink?: string,
   tags: TagType[],
 }
 
@@ -18,6 +18,6 @@ export type IngredientType = {
 
 export type RecipeType = RecipeOverviewType & {
     content: string,
-    reelLink: string,
+    reelLink?: string,
     ingredients: IngredientType[],
 };
